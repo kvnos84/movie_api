@@ -1,18 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>myFlix API Documentation</title>
-</head>
-<body>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      pre {
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-left: 4px solid #ccc;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
     <h1>myFlix API</h1>
-    <p>Welcome to the CareerFoundry Movie API! This API provides users 
-with access to information about movies, directors, and genres. Users will 
-be able to sign up, update their personal information, and create a list 
-of their favorite movies. It allows users</p>
-    <p>Endpoints and usage instructions will be added as the project 
-develops.</p>
-</body>
-</html>
+    <p>
+      Welcome to the CareerFoundry Movie API! This API provides users with
+      access to information about movies, directors, and genres. Users will be
+      able to sign up, update their personal information, and create a list of
+      their favorite movies.
+    </p>
 
+    <h2>API Endpoints</h2>
+    <p>Below is a list of available endpoints and their usage instructions.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Request</th>
+          <th>URL</th>
+          <th>Response</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>GET</td>
+          <td>/movies</td>
+          <td>Returns a list of all movies</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/movies/:title</td>
+          <td>
+            Returns details of a single movie by title (description, genre,
+            director, image URL, featured)
+          </td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/genres/:name</td>
+          <td>Returns the description of a genre by name</td>
+        </tr>
+        <tr>
+          <td>GET</td>
+          <td>/directors/:name</td>
+          <td>
+            Returns data about a director (bio, birth year, death year) by name
+          </td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/users</td>
+          <td>Registers a new user</td>
+        </tr>
+        <tr>
+          <td>PUT</td>
+          <td>/users/:username</td>
+          <td>Updates user info (e.g., username)</td>
+        </tr>
+        <tr>
+          <td>POST</td>
+          <td>/users/:username/movies/:movieID</td>
+          <td>
+            Adds a movie to user's list of favorites (returns confirmation text)
+          </td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/users/:username/movies/:movieID</td>
+          <td>
+            Removes a movie from user's list of favorites (returns confirmation
+            text)
+          </td>
+        </tr>
+        <tr>
+          <td>DELETE</td>
+          <td>/users/:username</td>
+          <td>Deregisters an existing user (returns confirmation text)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Detailed Endpoint Information</h2>
+
+    <h3>GET /movies</h3>
+    <p><strong>Description:</strong> Returns a list of all movies.</p>
+    <p><strong>Request Body:</strong> None</p>
+    <p><strong>Response:</strong></p>
+    <pre>
+[
+  {
+    "Title": "The Fountain",
+    "Description": "...",
+    "Genre": { "Name": "...", "Description": "..." },
+    "Director": { "Name": "...", "Bio": "..." },
+    "ImageURL": "...",
+    "Featured": false
+  },
+  ...
+]</pre
+    >
+
+    <h3>GET /movies/:title</h3>
+    <p><strong>Description:</strong> Returns data for a specific movie.</p>
+    <p><strong>URL Parameter:</strong> <code>:title</code></p>
+    <p><strong>Request Body:</strong> None</p>
+    <p><strong>Response:</strong></p>
+    <pre>
+{
+  "Title": "The Fountain",
+  "Description": "...",
+  "Genre": { "Name": "...", "Description": "..." },
+  "Director": { "Name": "...", "Bio": "..." },
+  "ImageURL": "...",
+  "Featured": false
+}</pre
+    >
+
+    <h3>GET /genres/:name</h3>
+    <p><strong>Description:</strong> Returns genre details by name.</p>
+    <p><strong>URL Parameter:</strong> <code>:name</code></p>
+    <p><strong>Response:</strong></p>
+    <pre>
+{
+  "Name": "Drama",
+  "Description": "A drama is a genre of narrative fiction..."
+}</pre
+    >
+
+    <h3>GET /directors/:name</h3>
+    <p><strong>Description:</strong> Returns director details by name.</p>
+    <p><strong>URL Parameter:</strong> <code>:name</code></p>
+    <p><strong>Response:</strong></p>
+    <pre>
+{
+  "Name": "Darren Aronofsky",
+  "Bio": "Darren Aronofsky (born February 12, 1969)...",
+  "Birth": 1969,
+  "Death": null
+}</pre
+    >
+
+    <h3>POST /users</h3>
+    <p><strong>Description:</strong> Registers a new user.</p>
+    <p><strong>Request Body:</strong></p>
+    <pre>
+{
+  "name": "Kim"
+}</pre
+    >
+    <p><strong>Response:</strong> Confirmation message</p>
+
+    <h3>PUT /users/:username</h3>
+    <p><strong>Description:</strong> Updates user info.</p>
+    <p><strong>Request Body:</strong></p>
+    <pre>
+{
+  "name": "NewName"
+}</pre
+    >
+    <p><strong>Response:</strong> Confirmation message</p>
+
+    <h3>POST /users/:username/movies/:movieID</h3>
+    <p><strong>Description:</strong> Adds a movie to user’s favorite list.</p>
+    <p><strong>Response:</strong> Confirmation message</p>
+
+    <h3>DELETE /users/:username/movies/:movieID</h3>
+    <p><strong>Description:</strong> Removes a movie from favorites.</p>
+    <p><strong>Response:</strong> Confirmation message</p>
+
+    <h3>DELETE /users/:username</h3>
+    <p><strong>Description:</strong> Deregisters a user.</p>
+    <p><strong>Response:</strong> Confirmation message</p>
+  </body>
+</html>
