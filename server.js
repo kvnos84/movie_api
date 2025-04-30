@@ -106,29 +106,88 @@ app.get('/directors/:name', (req, res) => {
   }
 });
 
+// === UPDATED USER ROUTES ===
+
 // Register a new user
 app.post('/users', (req, res) => {
-  res.send('POST request to register a new user');
+  if (!req.body.name) {
+    return res.status(400).send("Name is required to register.");
+  }
+
+  const newUser = {
+    id: uuid.v4(),
+    name: req.body.name,
+    favoriteMovies: []
+  };
+
+  const userExists = users.find(u => u.name.toLowerCase() === newUser.name.toLowerCase());
+
+  if (userExists) {
+    return res.status(400).send("User already exists.");
+  }
+
+  users.push(newUser);
+  res.status(201).json(newUser);
 });
 
 // Update user info by username
 app.put('/users/:username', (req, res) => {
-  res.send(`PUT request to update user info for: ${req.params.username}`);
+  const user = users.find(u => u.name.toLowerCase() === req.params.username.toLowerCase());
+
+  if (!user) {
+    return res.status(404).send("User not found.");
+  }
+
+  user.name = req.body.name || user.name;
+  res.status(200).json(user);
 });
 
 // Add a movie to user's favorites
-app.post('/users/:username/movies/:movieID', (req, res) => {
-  res.send(`POST request to add movie ${req.params.movieID} to ${req.params.username}'s favorites`);
+app.post('/users/:username/movies/:movieTitle', (req, res) => {
+  const user = users.find(u => u.name === req.params.username);
+  const movieTitle = req.params.movieTitle;
+
+  if (!user) {
+    return res.status(404).send("User not found.");
+  }
+
+  const movie = movies.find(m => m.Title === movieTitle);
+
+  if (!movie) {
+    return res.status(404).send("Movie not found.");
+  }
+
+  if (!user.favoriteMovies.includes(movieTitle)) {
+    user.favoriteMovies.push(movieTitle);
+  }
+
+  res.status(200).json(user);
 });
 
 // Remove a movie from user's favorites
-app.delete('/users/:username/movies/:movieID', (req, res) => {
-  res.send(`DELETE request to remove movie ${req.params.movieID} from ${req.params.username}'s favorites`);
+app.delete('/users/:username/movies/:movieTitle', (req, res) => {
+  const user = users.find(u => u.name === req.params.username);
+  const movieTitle = req.params.movieTitle;
+
+  if (!user) {
+    return res.status(404).send("User not found.");
+  }
+
+  user.favoriteMovies = user.favoriteMovies.filter(m => m !== movieTitle);
+
+  res.status(200).json(user);
 });
 
 // Deregister user
 app.delete('/users/:username', (req, res) => {
-  res.send(`DELETE request to deregister user: ${req.params.username}`);
+  const userIndex = users.findIndex(u => u.name === req.params.username);
+
+  if (userIndex === -1) {
+    return res.status(404).send("User not found.");
+  }
+
+  users.splice(userIndex, 1);
+  res.status(200).send("User deregistered.");
 });
 
 // Start server

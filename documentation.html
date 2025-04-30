@@ -60,10 +60,7 @@
         <tr>
           <td>GET</td>
           <td>/movies/:title</td>
-          <td>
-            Returns details of a single movie by title (description, genre,
-            director, image URL, featured)
-          </td>
+          <td>Returns details of a single movie by title</td>
         </tr>
         <tr>
           <td>GET</td>
@@ -73,9 +70,7 @@
         <tr>
           <td>GET</td>
           <td>/directors/:name</td>
-          <td>
-            Returns data about a director (bio, birth year, death year) by name
-          </td>
+          <td>Returns data about a director by name</td>
         </tr>
         <tr>
           <td>POST</td>
@@ -85,27 +80,22 @@
         <tr>
           <td>PUT</td>
           <td>/users/:username</td>
-          <td>Updates user info (e.g., username)</td>
+          <td>Updates user info</td>
         </tr>
         <tr>
           <td>POST</td>
           <td>/users/:username/movies/:movieID</td>
-          <td>
-            Adds a movie to user's list of favorites (returns confirmation text)
-          </td>
+          <td>Adds a movie to user's favorites</td>
         </tr>
         <tr>
           <td>DELETE</td>
           <td>/users/:username/movies/:movieID</td>
-          <td>
-            Removes a movie from user's list of favorites (returns confirmation
-            text)
-          </td>
+          <td>Removes a movie from user's favorites</td>
         </tr>
         <tr>
           <td>DELETE</td>
           <td>/users/:username</td>
-          <td>Deregisters an existing user (returns confirmation text)</td>
+          <td>Deregisters a user</td>
         </tr>
       </tbody>
     </table>
@@ -182,6 +172,7 @@
 
     <h3>PUT /users/:username</h3>
     <p><strong>Description:</strong> Updates user info.</p>
+    <p><strong>URL Parameter:</strong> <code>:username</code></p>
     <p><strong>Request Body:</strong></p>
     <pre>
 {
@@ -191,15 +182,50 @@
     <p><strong>Response:</strong> Confirmation message</p>
 
     <h3>POST /users/:username/movies/:movieID</h3>
-    <p><strong>Description:</strong> Adds a movie to user’s favorite list.</p>
-    <p><strong>Response:</strong> Confirmation message</p>
+    <p>
+      <strong>Description:</strong> Adds a specific movie to a user's list of
+      favorites.
+    </p>
+    <p><strong>URL Parameters:</strong></p>
+    <ul>
+      <li><code>:username</code> - The user's username</li>
+      <li><code>:movieID</code> - The ID of the movie to add</li>
+    </ul>
+    <p><strong>Request Body:</strong> None</p>
+    <p><strong>Response:</strong></p>
+    <pre>
+"POST request to add movie &lt;movieID&gt; to &lt;username&gt;'s favorites"
+</pre
+    >
 
     <h3>DELETE /users/:username/movies/:movieID</h3>
-    <p><strong>Description:</strong> Removes a movie from favorites.</p>
-    <p><strong>Response:</strong> Confirmation message</p>
+    <p>
+      <strong>Description:</strong> Removes a specific movie from a user's list
+      of favorites.
+    </p>
+    <p><strong>URL Parameters:</strong></p>
+    <ul>
+      <li><code>:username</code> - The user's username</li>
+      <li><code>:movieID</code> - The ID of the movie to remove</li>
+    </ul>
+    <p><strong>Request Body:</strong> None</p>
+    <p><strong>Response:</strong></p>
+    <pre>
+"DELETE request to remove movie &lt;movieID&gt; from &lt;username&gt;'s favorites"
+</pre
+    >
 
     <h3>DELETE /users/:username</h3>
-    <p><strong>Description:</strong> Deregisters a user.</p>
-    <p><strong>Response:</strong> Confirmation message</p>
+    <p>
+      <strong>Description:</strong> Deletes a user from the system (deregisters
+      them).
+    </p>
+    <p><strong>URL Parameter:</strong> <code>:username</code></p>
+    <p><strong>Request Body:</strong> None</p>
+    <p><strong>Response:</strong></p>
+    <pre>
+"DELETE request to deregister user: &lt;username&gt;"
+</pre
+    >
   </body>
 </html>
