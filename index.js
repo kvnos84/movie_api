@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
   res.send('API is working and connected to MongoDB!');
 });
 
-// ✅ Return a list of ALL movies (Protected)
+/* // ✅ Return a list of ALL movies (Protected)
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const allMovies = await Movies.find();
@@ -33,7 +33,18 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
   } catch (err) {
     res.status(500).send('Error: ' + err.message);
   }
+}); */
+
+// 🚧 TEMPORARILY removed auth for Achievement 3 React integration
+app.get('/movies', async (req, res) => {
+  try {
+    const allMovies = await Movies.find();
+    res.json(allMovies);
+  } catch (err) {
+    res.status(500).send('Error: ' + err.message);
+  }
 });
+
 
 // ✅ Return data about a single movie by title (Protected)
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }), async (req, res) => {
