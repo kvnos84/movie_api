@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -18,7 +20,10 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/movieDB');
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // ✅ TEST ROUTE
 app.get('/', (req, res) => {
