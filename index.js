@@ -2,6 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const app = express();
+const cors = require('cors');
+
+
+// ✅ ENABLE CORS before defining routes
+app.use(cors());
 
 // Middleware to parse JSON
 app.use(express.json());
