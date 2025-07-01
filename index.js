@@ -29,7 +29,11 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/movieDB');
+/* local mongoose.connect('mongodb://localhost:27017/movieDB'); */
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 /**
  * Root route to confirm server is running
