@@ -18,12 +18,18 @@
   },
   "homepage": "https://github.com/kvnos84/movie_api#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "mongoose": "^8.13.2",
     "morgan": "^1.10.0",
     "uuid": "^11.1.0"
   },
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "jsdoc": "^4.0.4"
+  }
 }
