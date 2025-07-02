@@ -30,10 +30,7 @@ const Users = Models.User;
 
 // Connect to MongoDB
 /* local mongoose.connect('mongodb://localhost:27017/movieDB'); */
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(process.env.MONGO_URI);
 
 /**
  * Root route to confirm server is running
