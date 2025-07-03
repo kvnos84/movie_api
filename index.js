@@ -3,17 +3,19 @@
  * Sets up Express server, connects to MongoDB, and defines all routes.
  */
 
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const cors = require('cors'); // <-- NEW LINE
+const cors = require('cors');
 const app = express();
 const { check, validationResult } = require('express-validator');
 
 // Middleware to parse JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors()); // <-- NEW LINE
+app.use(cors());
 
 /**
  * Import authentication logic
@@ -28,15 +30,27 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// Connect to MongoDB
-/* local mongoose.connect('mongodb://localhost:27017/movieDB'); */
-mongoose.connect(process.env.MONGO_URI);
+// Connect to MongoDB (fallback to local if env var not set)
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/movieDB';
+
+mongoose.connect(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.once('open', () => {
+  console.log('✅ Connected to MongoDB');
+});
+
+mongoose.connection.on('error', err => {
+  console.error('❌ MongoDB connection error:', err.message);
+});
+
+// Log current environment
+console.log(`App running in ${process.env.NODE_ENV || 'development'} mode`);
 
 /**
  * Root route to confirm server is running
- * @function
- * @param {Object} req - Express request
- * @param {Object} res - Express response
  */
 app.get('/', (req, res) => {
   res.send('API is working and connected to MongoDB!');
@@ -44,11 +58,6 @@ app.get('/', (req, res) => {
 
 /**
  * Get all movies
- * @function
- * @name GET/movies
- * @param {Object} req
- * @param {Object} res
- * @returns {Array} List of all movie objects
  */
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -61,11 +70,6 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
 
 /**
  * Get a movie by title
- * @function
- * @name GET/movies/:title
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} Movie object matching the title
  */
 app.get('/movies/:title', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -82,11 +86,6 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), asyn
 
 /**
  * Get genre info by name
- * @function
- * @name GET/genres/:name
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} Genre details
  */
 app.get('/genres/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -103,11 +102,6 @@ app.get('/genres/:name', passport.authenticate('jwt', { session: false }), async
 
 /**
  * Get director info by name
- * @function
- * @name GET/directors/:name
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} Director details
  */
 app.get('/directors/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -124,11 +118,6 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), as
 
 /**
  * Register a new user
- * @function
- * @name POST/users
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} New user object
  */
 app.post('/users',
   [
@@ -170,11 +159,6 @@ app.post('/users',
 
 /**
  * Update user info
- * @function
- * @name PUT/users/:username
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} Updated user object
  */
 app.put('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -186,7 +170,7 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }), as
     }
 
     user.Username = Username || user.Username;
-    user.Password = Password || user.Password;
+    user.Password = Password ? Users.hashPassword(Password) : user.Password;
     user.Email = Email || user.Email;
     user.Birthday = Birthday || user.Birthday;
 
@@ -199,11 +183,6 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }), as
 
 /**
  * Add movie to user's favorites
- * @function
- * @name POST/users/:username/movies/:movieTitle
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} Updated user object with new favorite
  */
 app.post('/users/:username/movies/:movieTitle', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -228,11 +207,6 @@ app.post('/users/:username/movies/:movieTitle', passport.authenticate('jwt', { s
 
 /**
  * Remove movie from user's favorites
- * @function
- * @name DELETE/users/:username/movies/:movieTitle
- * @param {Object} req
- * @param {Object} res
- * @returns {Object} Updated user object
  */
 app.delete('/users/:username/movies/:movieTitle', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -253,11 +227,6 @@ app.delete('/users/:username/movies/:movieTitle', passport.authenticate('jwt', {
 
 /**
  * Deregister user
- * @function
- * @name DELETE/users/:username
- * @param {Object} req
- * @param {Object} res
- * @returns {String} Success message
  */
 app.delete('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -277,46 +246,47 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
  * Start the Express server
  */
 const port = process.env.PORT || 8080;
-  app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-
 /**
- * Seed initial movies if the DB is empty
+ * Seed initial movies if the DB is empty (only in non-production)
  */
 (async () => {
-  const movieCount = await Movies.countDocuments();
-  if (movieCount === 0) {
-    await Movies.insertMany([
-      {
-        Title: "The Fountain",
-        Description: "...",
-        Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
-        Director: { Name: "Darren Aronofsky", Bio: "Darren Aronofsky is an American filmmaker..." },
-        Actors: ["Hugh Jackman", "Rachel Weisz"],
-        ImagePath: "...",
-        Featured: false
-      },
-      {
-        Title: "The Brutalist",
-        Description: "...",
-        Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
-        Director: { Name: "Brady Corbet", Bio: "Brady Corbet is a director and actor..." },
-        Actors: ["Joel Edgerton", "Marion Cotillard"],
-        ImagePath: "...",
-        Featured: false
-      },
-      {
-        Title: "A Real Pain",
-        Description: "...",
-        Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
-        Director: { Name: "Jesse Eisenberg", Bio: "Jesse Eisenberg is a movie actor..." },
-        Actors: ["Jesse Eisenberg", "Kieran Culkin"],
-        ImagePath: "...",
-        Featured: false
-      }
-    ]);
-    console.log("Database seeded with initial movies.");
+  if (process.env.NODE_ENV !== 'production') {
+    const movieCount = await Movies.countDocuments();
+    if (movieCount === 0) {
+      await Movies.insertMany([
+        {
+          Title: "The Fountain",
+          Description: "...",
+          Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
+          Director: { Name: "Darren Aronofsky", Bio: "Darren Aronofsky is an American filmmaker..." },
+          Actors: ["Hugh Jackman", "Rachel Weisz"],
+          ImagePath: "...",
+          Featured: false
+        },
+        {
+          Title: "The Brutalist",
+          Description: "...",
+          Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
+          Director: { Name: "Brady Corbet", Bio: "Brady Corbet is a director and actor..." },
+          Actors: ["Joel Edgerton", "Marion Cotillard"],
+          ImagePath: "...",
+          Featured: false
+        },
+        {
+          Title: "A Real Pain",
+          Description: "...",
+          Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
+          Director: { Name: "Jesse Eisenberg", Bio: "Jesse Eisenberg is a movie actor..." },
+          Actors: ["Jesse Eisenberg", "Kieran Culkin"],
+          ImagePath: "...",
+          Featured: false
+        }
+      ]);
+      console.log("Database seeded with initial movies.");
+    }
   }
 })();
