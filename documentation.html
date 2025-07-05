@@ -84,12 +84,12 @@
         </tr>
         <tr>
           <td>POST</td>
-          <td>/users/:username/movies/:movieID</td>
+          <td>/users/:username/movies/:movieId</td>
           <td>Adds a movie to user's favorites</td>
         </tr>
         <tr>
           <td>DELETE</td>
-          <td>/users/:username/movies/:movieID</td>
+          <td>/users/:username/movies/:movieId</td>
           <td>Removes a movie from user's favorites</td>
         </tr>
         <tr>
@@ -181,7 +181,7 @@
     >
     <p><strong>Response:</strong> Confirmation message</p>
 
-    <h3>POST /users/:username/movies/:movieID</h3>
+    <h3>POST /users/:username/movies/:movieId</h3>
     <p>
       <strong>Description:</strong> Adds a specific movie to a user's list of
       favorites.
@@ -189,16 +189,16 @@
     <p><strong>URL Parameters:</strong></p>
     <ul>
       <li><code>:username</code> - The user's username</li>
-      <li><code>:movieID</code> - The ID of the movie to add</li>
+      <li><code>:movieId</code> - The ID of the movie to add</li>
     </ul>
     <p><strong>Request Body:</strong> None</p>
     <p><strong>Response:</strong></p>
     <pre>
-"POST request to add movie &lt;movieID&gt; to &lt;username&gt;'s favorites"
+"POST request to add movie &lt;movieId&gt; to &lt;username&gt;'s favorites"
 </pre
     >
 
-    <h3>DELETE /users/:username/movies/:movieID</h3>
+    <h3>DELETE /users/:username/movies/:movieId</h3>
     <p>
       <strong>Description:</strong> Removes a specific movie from a user's list
       of favorites.
@@ -206,12 +206,12 @@
     <p><strong>URL Parameters:</strong></p>
     <ul>
       <li><code>:username</code> - The user's username</li>
-      <li><code>:movieID</code> - The ID of the movie to remove</li>
+      <li><code>:movieId</code> - The ID of the movie to remove</li>
     </ul>
     <p><strong>Request Body:</strong> None</p>
     <p><strong>Response:</strong></p>
     <pre>
-"DELETE request to remove movie &lt;movieID&gt; from &lt;username&gt;'s favorites"
+"DELETE request to remove movie &lt;movieId&gt; from &lt;username&gt;'s favorites"
 </pre
     >
 

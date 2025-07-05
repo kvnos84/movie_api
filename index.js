@@ -182,12 +182,12 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }), as
 });
 
 /**
- * Add movie to user's favorites
+ * Add movie to user's favorites (using movieId)
  */
-app.post('/users/:username/movies/:movieTitle', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const user = await Users.findOne({ Username: req.params.username });
-    const movie = await Movies.findOne({ Title: req.params.movieTitle });
+    const movie = await Movies.findById(req.params.movieId);
 
     if (!user || !movie) {
       return res.status(404).send("User or Movie not found.");
@@ -206,12 +206,12 @@ app.post('/users/:username/movies/:movieTitle', passport.authenticate('jwt', { s
 });
 
 /**
- * Remove movie from user's favorites
+ * Remove movie from user's favorites (using movieId)
  */
-app.delete('/users/:username/movies/:movieTitle', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const user = await Users.findOne({ Username: req.params.username });
-    const movie = await Movies.findOne({ Title: req.params.movieTitle });
+    const movie = await Movies.findById(req.params.movieId);
 
     if (!user || !movie) {
       return res.status(404).send("User or Movie not found.");

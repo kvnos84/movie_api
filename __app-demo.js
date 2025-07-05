@@ -63,32 +63,32 @@ app.put('/users/:username', (req, res) => {
 });
 
 // Add a movie to user's favorites
-app.post('/users/:username/movies/:movieID', (req, res) => {
-    const { username, movieID } = req.params;
+app.post('/users/:username/movies/:movieId', (req, res) => {
+    const { username, movieId } = req.params;
     const user = users.find(u => u.name === username);
 
     if (!user) {
         return res.status(404).send('User not found');
     }
 
-    if (!user.favorites.includes(movieID)) {
-        user.favorites.push(movieID);
+    if (!user.favorites.includes(movieId)) {
+        user.favorites.push(movieId);
     }
 
-    res.status(200).send(`Movie ${movieID} added to ${username}'s favorites`);
+    res.status(200).send(`Movie ${movieId} added to ${username}'s favorites`);
 });
 
 // Remove a movie from user's favorites
-app.delete('/users/:username/movies/:movieID', (req, res) => {
-    const { username, movieID } = req.params;
+app.delete('/users/:username/movies/:movieId', (req, res) => {
+    const { username, movieId } = req.params;
     const user = users.find(u => u.name === username);
 
     if (!user) {
         return res.status(404).send('User not found');
     }
 
-    user.favorites = user.favorites.filter(id => id !== movieID);
-    res.status(200).send(`Movie ${movieID} removed from ${username}'s favorites`);
+    user.favorites = user.favorites.filter(id => id !== movieId);
+    res.status(200).send(`Movie ${movieId} removed from ${username}'s favorites`);
 });
 
 // Deregister user
