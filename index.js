@@ -16,7 +16,7 @@ const { check, validationResult } = require('express-validator');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
-  'http://localhost:8080',
+  'https://movie-api-jyp7.onrender.com',
   'http://localhost:1234',
   'https://kvnflix.netlify.app'
 ];
