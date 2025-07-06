@@ -15,7 +15,22 @@ const { check, validationResult } = require('express-validator');
 // Middleware to parse JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'https://kvnflix.netlify.app'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const message = 'The CORS policy for this application does not allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 /**
  * Import authentication logic
