@@ -15,21 +15,23 @@ const { check, validationResult } = require('express-validator');
 // Middleware to parse JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ✅ FINAL CORS CONFIGURATION
 const allowedOrigins = [
-  'https://movie-api-jyp7.onrender.com',
   'http://localhost:1234',
   'https://kvnflix.netlify.app'
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const message = 'The CORS policy for this application does not allow access from origin ' + origin;
-      return callback(new Error(message), false);
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow requests with no origin
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('CORS error: ' + origin + ' not allowed'), false);
     }
-    return callback(null, true);
-  }
+  },
+  optionsSuccessStatus: 200 // some legacy browsers choke on 204
 }));
 
 /**
