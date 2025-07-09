@@ -3,18 +3,15 @@
  * Sets up Express server, connects to MongoDB, and defines all routes.
  */
 
-require('dotenv').config();
+require('dotenv').config(); // Load env variables first
 
 const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
-const app = express();
 const { check, validationResult } = require('express-validator');
 
-// Middleware to parse JSON
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const app = express(); // ✅ Declare after express is required
 
 // ✅ FINAL CORS CONFIGURATION
 const allowedOrigins = [
@@ -24,15 +21,20 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow requests with no origin
+    console.log('Request origin:', origin);
+    if (!origin) return callback(null, true); // allow requests with no origin (e.g., Postman)
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
       return callback(new Error('CORS error: ' + origin + ' not allowed'), false);
     }
   },
-  optionsSuccessStatus: 200 // some legacy browsers choke on 204
+  optionsSuccessStatus: 200
 }));
+
+// ✅ Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 /**
  * Import authentication logic
@@ -307,3 +309,8 @@ app.listen(port, () => {
     }
   }
 })();
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
