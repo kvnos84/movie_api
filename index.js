@@ -283,7 +283,7 @@ app.listen(port, () => {
           Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
           Director: { Name: "Darren Aronofsky", Bio: "Darren Aronofsky is an American filmmaker..." },
           Actors: ["Hugh Jackman", "Rachel Weisz"],
-          ImagePath: "...",
+          ImagePath: "https://m.media-amazon.com/images/M/MV5BMTU5OTczMTcxMV5BMl5BanBnXkFtZTcwNDg3MTEzMw@@._V1_FMjpg_UY2048_.jpg",
           Featured: false
         },
         {
@@ -292,7 +292,7 @@ app.listen(port, () => {
           Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
           Director: { Name: "Brady Corbet", Bio: "Brady Corbet is a director and actor..." },
           Actors: ["Joel Edgerton", "Marion Cotillard"],
-          ImagePath: "...",
+          ImagePath: "https://m.media-amazon.com/images/M/MV5BM2U0MWRjZTMtMDVhNC00MzY4LTgwOTktZGQ2MDdiYTI4OWMxXkEyXkFqcGc@._V1_FMjpg_UY3000_.jpg",
           Featured: false
         },
         {
@@ -301,7 +301,7 @@ app.listen(port, () => {
           Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
           Director: { Name: "Jesse Eisenberg", Bio: "Jesse Eisenberg is a movie actor..." },
           Actors: ["Jesse Eisenberg", "Kieran Culkin"],
-          ImagePath: "...",
+          ImagePath: "https://m.media-amazon.com/images/M/MV5BZDNhMGYwM2EtZmJmNS00ZTQ3LWIyZmYtZDdjNWM0OWYxYTA0XkEyXkFqcGc@._V1_FMjpg_UY2048_.jpg",
           Featured: false
         }
       ]);
