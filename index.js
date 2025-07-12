@@ -15,6 +15,7 @@ const app = express(); // ✅ Declare after express is required
 
 // ✅ FINAL CORS CONFIGURATION
 const allowedOrigins = [
+  'http://localhost:4200',
   'http://localhost:1234',
   'https://kvnflix.netlify.app'
 ];
@@ -283,7 +284,7 @@ app.listen(port, () => {
           Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
           Director: { Name: "Darren Aronofsky", Bio: "Darren Aronofsky is an American filmmaker..." },
           Actors: ["Hugh Jackman", "Rachel Weisz"],
-          ImagePath: "https://m.media-amazon.com/images/M/MV5BMTU5OTczMTcxMV5BMl5BanBnXkFtZTcwNDg3MTEzMw@@._V1_FMjpg_UY2048_.jpg",
+          ImagePath: "https://image.tmdb.org/t/p/w1280/4XTf8GuCVLWolubANaKkpk62YPq.jpg",
           Featured: false
         },
         {
@@ -292,7 +293,7 @@ app.listen(port, () => {
           Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
           Director: { Name: "Brady Corbet", Bio: "Brady Corbet is a director and actor..." },
           Actors: ["Joel Edgerton", "Marion Cotillard"],
-          ImagePath: "https://m.media-amazon.com/images/M/MV5BM2U0MWRjZTMtMDVhNC00MzY4LTgwOTktZGQ2MDdiYTI4OWMxXkEyXkFqcGc@._V1_FMjpg_UY3000_.jpg",
+          ImagePath: "https://image.tmdb.org/t/p/w1280/vP7Yd6couiAaw9jgMd5cjMRj3hQ.jpg",
           Featured: false
         },
         {
@@ -301,7 +302,7 @@ app.listen(port, () => {
           Genre: { Name: "Drama", Description: "A drama is a genre of narrative fiction..." },
           Director: { Name: "Jesse Eisenberg", Bio: "Jesse Eisenberg is a movie actor..." },
           Actors: ["Jesse Eisenberg", "Kieran Culkin"],
-          ImagePath: "https://m.media-amazon.com/images/M/MV5BZDNhMGYwM2EtZmJmNS00ZTQ3LWIyZmYtZDdjNWM0OWYxYTA0XkEyXkFqcGc@._V1_FMjpg_UY2048_.jpg",
+          ImagePath: "https://image.tmdb.org/t/p/w1280/67xRIXm5TxXRT4nV2V4AEJ9yq2d.jpg",
           Featured: false
         }
       ]);
