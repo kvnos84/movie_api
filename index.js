@@ -22,12 +22,10 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     console.log('Request origin:', origin);
-    if (!origin) return callback(null, true); // allow requests with no origin (e.g., Postman)
-    if (allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
-    } else {
-      return callback(new Error('CORS error: ' + origin + ' not allowed'), false);
     }
+    return callback(new Error('CORS error: ' + origin + ' not allowed'), false);
   },
   optionsSuccessStatus: 200
 }));
