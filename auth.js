@@ -69,7 +69,15 @@ module.exports = (router) => {
         }
 
         let token = generateJWTToken(user.toJSON());
-        return res.json({ user, token });
+          const safeUser = {
+            _id: user._id,
+            Username: user.Username,
+            Email: user.Email,
+            Birthday: user.Birthday,
+            FavoriteMovies: user.FavoriteMovies
+          };
+
+          return res.json({ user: safeUser, token });
       });
     })(req, res);
   });

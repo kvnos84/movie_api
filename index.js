@@ -136,6 +136,23 @@ app.get('/directors/:name', passport.authenticate('jwt', { session: false }), as
 });
 
 /**
+ * Get user by username
+ */
+app.get('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    const user = await Users.findOne({ Username: req.params.username });
+
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).send("Error: " + err.message);
+  }
+});
+
+/**
  * Register a new user
  */
 app.post('/users',
