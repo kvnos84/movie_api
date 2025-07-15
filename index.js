@@ -15,8 +15,9 @@ const app = express(); // ✅ Declare after express is required
 
 // ✅ FINAL CORS CONFIGURATION
 const allowedOrigins = [
-  'http://localhost:1234',
-  'https://kvnflix.netlify.app'
+  'http://localhost:4200',      // Angular (local dev)
+  'http://localhost:1234',      // React (local dev)
+  'https://kvnflix.netlify.app' // Production frontend (React or Angular)
 ];
 
 app.use(cors({
